@@ -1,5 +1,5 @@
 module.exports = function (req, res, next) {
-  // TEMP AUTH (to avoid crash)
+  // TEMP AUTH (for testing)
   req.userId = "demo-user"
   req.userRole = "user"
   next()
