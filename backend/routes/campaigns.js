@@ -3,9 +3,13 @@ const router = express.Router()
 
 const authMiddleware = require('../middleware/auth')
 
-// 
+// DEBUG (optional)
 console.log("authMiddleware:", authMiddleware)
+const Campaign = require('../models/Campaign')
+const Donation = require('../models/Donation')
+const User = require('../models/User')
 
+const { CAMPAIGN_CATEGORIES, sanitizeCampaignData } = require('../utils/constants')
 const Campaign = require('../models/Campaign')
 const express = require('express')
 const router = express.Router()
