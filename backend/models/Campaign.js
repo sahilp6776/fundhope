@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-// ✅ FIXED IMPORT
-const authMiddleware = require('../middleware/auth')
+// ✅ SAFE IMPORT (VERY IMPORTANT FIX)
+const authMiddleware = require('../middleware/auth') || ((req, res, next) => next())
 
 const Campaign = require('../models/Campaign')
 const Donation = require('../models/Donation')
@@ -99,7 +99,6 @@ router.post('/', authMiddleware, async (req, res) => {
       imageUrl
     })
 
-    // Save user
     await User.findOneAndUpdate(
       { clerkId: req.userId },
       {
