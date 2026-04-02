@@ -5,19 +5,12 @@ const authMiddleware = require('../middleware/auth')
 
 // DEBUG (optional)
 console.log("authMiddleware:", authMiddleware)
+
 const Campaign = require('../models/Campaign')
 const Donation = require('../models/Donation')
 const User = require('../models/User')
 
 const { CAMPAIGN_CATEGORIES, sanitizeCampaignData } = require('../utils/constants')
-const Campaign = require('../models/Campaign')
-const express = require('express')
-const router = express.Router()
-const { authMiddleware } = require('../middleware/auth')
-const Campaign = require('../models/Campaign')
-const Donation = require('../models/Donation')
-const User = require('../models/User')
-const { CAMPAIGN_CATEGORIES, VALIDATION_RULES, sanitizeInput, sanitizeCampaignData } = require('../utils/constants')
 
 
 // ✅ GET ALL CAMPAIGNS (PUBLIC)
@@ -44,7 +37,7 @@ router.get('/', async (req, res) => {
 })
 
 
-// ✅ GET USER CAMPAIGNS (FIXED ROUTE)
+// ✅ GET USER CAMPAIGNS
 router.get('/user/me', authMiddleware, async (req, res) => {
   try {
     const { limit = 20, skip = 0 } = req.query
@@ -100,7 +93,14 @@ router.post('/', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'Deadline must be in the future' })
     }
 
-    const sanitized = sanitizeCampaignData({ title, description, category, goalAmount, deadline, imageUrl })
+    const sanitized = sanitizeCampaignData({
+      title,
+      description,
+      category,
+      goalAmount,
+      deadline,
+      imageUrl
+    })
 
     // Save user
     await User.findOneAndUpdate(
