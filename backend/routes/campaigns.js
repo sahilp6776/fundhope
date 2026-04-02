@@ -1,5 +1,14 @@
 const express = require('express')
 const router = express.Router()
+
+const authMiddleware = require('../middleware/auth')
+
+// 
+console.log("authMiddleware:", authMiddleware)
+
+const Campaign = require('../models/Campaign')
+const express = require('express')
+const router = express.Router()
 const { authMiddleware } = require('../middleware/auth')
 const Campaign = require('../models/Campaign')
 const Donation = require('../models/Donation')
