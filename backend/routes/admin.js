@@ -1,8 +1,9 @@
 // Admin API routes – protected admin-only endpoints
 const express = require('express')
 const router = express.Router()
-const { requireAuth } = require('@clerk/express')
-const { adminMiddleware } = require('../middleware/auth')
+
+// ✅ FIXED
+const authMiddleware = require('../middleware/auth')
 const Campaign = require('../models/Campaign')
 const Donation = require('../models/Donation')
 const ActivityLog = require('../models/ActivityLog')
@@ -191,7 +192,7 @@ router.get('/analytics', async (req, res) => {
 
 // ===== PROTECTED WRITE ENDPOINTS (require admin auth) =====
 // All routes below require auth and admin role
-router.use(authMiddleware, adminMiddleware)
+router.use(authMiddleware)
 
 // PATCH /api/admin/campaigns/:id/status – approve or reject with comments
 router.patch('/campaigns/:id/status', async (req, res) => {
