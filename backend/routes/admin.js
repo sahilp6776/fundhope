@@ -191,7 +191,7 @@ router.get('/analytics', async (req, res) => {
 
 // ===== PROTECTED WRITE ENDPOINTS (require admin auth) =====
 // All routes below require auth and admin role
-router.use(authMiddleware)
+router.use(authMiddleware, adminMiddleware)
 
 // PATCH /api/admin/campaigns/:id/status – approve or reject with comments
 router.patch('/campaigns/:id/status', async (req, res) => {
