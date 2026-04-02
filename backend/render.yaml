@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: fundhope-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: fundhope-db
+          property: connectionString
+      - key: FRONTEND_URL
+        value: https://your-vercel-domain.vercel.app
+      # IMPORTANT: Add these environment variables in Render Dashboard
+      # - CLERK_SECRET_KEY
+      # - RAZORPAY_KEY_ID
+      # - RAZORPAY_KEY_SECRET
+
+databases:
+  - name: fundhope-db
+    engine: mongodb
+    version: latest
+    plan: free
+    ipWhitelist: []
