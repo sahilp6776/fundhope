@@ -9,7 +9,7 @@ const Donation = require('../models/Donation')
 const ActivityLog = require('../models/ActivityLog')
 const Notification = require('../models/Notification')
 const User = require('../models/User')
-12 console.log("Admin routes loaded ✅")
+console.log("Admin routes loaded ✅")
 
 // ===== PUBLIC READ ENDPOINTS (no auth required) =====
 
