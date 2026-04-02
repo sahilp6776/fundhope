@@ -1,8 +1,6 @@
-// middleware/auth.js
-
-module.exports = (req, res, next) => {
-  console.log('Auth middleware running')
-
-  // simple allow (for now)
+module.exports = function (req, res, next) {
+  // TEMP AUTH (to avoid crash)
+  req.userId = "demo-user"
+  req.userRole = "user"
   next()
 }
