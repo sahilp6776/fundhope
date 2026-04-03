@@ -31,6 +31,12 @@ export default {
           700: "#b45309",
         },
       },
+
+      boxShadow: {
+        smooth: "0 4px 14px rgba(0, 0, 0, 0.08)",
+        "smooth-lg": "0 10px 25px rgba(0, 0, 0, 0.12)",
+        glow: "0 0 15px rgba(14, 165, 233, 0.5)",
+      },
     },
   },
   plugins: [],
