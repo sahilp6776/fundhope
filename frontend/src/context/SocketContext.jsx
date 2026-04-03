@@ -1,7 +1,7 @@
 // SocketContext – WebSocket connection management for real-time notifications
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth, useUser } from '@clerk/clerk-react'
-import io from 'socket.io-client'
+import { io } from 'socket.io-client' // ✅ FIXED IMPORT
 
 const SocketContext = createContext()
 
@@ -12,38 +12,29 @@ export const SocketProvider = ({ children }) => {
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
-    if (!isLoaded) {
-      return
-    }
-
-    // Skip WebSocket connection if user is not authenticated
-    if (!user) {
+    if (!isLoaded || !user) {
       setSocket(null)
       setConnected(false)
       return
     }
 
+    let newSocket
+
     const connectSocket = async () => {
       try {
-        // Get token for authentication
         const token = await getToken()
-        
-        if (!token) {
-          setSocket(null)
-          return null
-        }
-        
-        // Connect to WebSocket server
-        const newSocket = io(
+
+        if (!token) return
+
+        newSocket = io(
           import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000',
           {
             auth: {
               token,
               userId: user.id,
             },
+            transports: ['websocket'], // ✅ IMPORTANT (fix Vercel issues)
             reconnection: true,
-            reconnectionDelay: 1000,
-            reconnectionDelayMax: 5000,
             reconnectionAttempts: 5,
           }
         )
@@ -57,25 +48,16 @@ export const SocketProvider = ({ children }) => {
         })
 
         setSocket(newSocket)
-
-        // Return cleanup function
-        return () => {
-          newSocket.disconnect()
-        }
       } catch (err) {
-        console.error('Failed to connect to WebSocket:', err)
-        return null
+        console.error('Socket error:', err)
       }
     }
 
-    let cleanup = null
-    connectSocket().then((cleanupFn) => {
-      cleanup = cleanupFn
-    })
+    connectSocket()
 
     return () => {
-      if (typeof cleanup === 'function') {
-        cleanup()
+      if (newSocket) {
+        newSocket.disconnect()
       }
     }
   }, [isLoaded, user, getToken])
