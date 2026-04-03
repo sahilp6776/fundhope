@@ -37,6 +37,10 @@ export default {
         "smooth-lg": "0 10px 25px rgba(0, 0, 0, 0.12)",
         glow: "0 0 15px rgba(14, 165, 233, 0.5)",
       },
+
+      transitionDuration: {
+        350: "350ms",
+      },
     },
   },
   plugins: [],
